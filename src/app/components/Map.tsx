@@ -1,25 +1,36 @@
 // at top
 "use client";
-import { useEffect, useMemo, useState } from "react";
-import dynamic from "next/dynamic";
-import "leaflet/dist/leaflet.css";
-import { segmentSpeeds, colorForSpeed, haversine } from "../lib/geo"; // or "@/lib/geo" if alias set
 
-const MapContainer = dynamic(
+import dynamic from "next/dynamic";
+import type {
+  MapContainerProps,
+  TileLayerProps,
+  PolylineProps,
+  TooltipProps,
+} from "react-leaflet";
+import type { LatLngTuple } from "leaflet";
+
+// Typed dynamic imports
+const MapContainer = dynamic<MapContainerProps>(
   () => import("react-leaflet").then((m) => m.MapContainer),
   { ssr: false }
 );
-const TileLayer = dynamic(
+const TileLayer = dynamic<TileLayerProps>(
   () => import("react-leaflet").then((m) => m.TileLayer),
   { ssr: false }
 );
-const Polyline = dynamic(
+const Polyline = dynamic<PolylineProps>(
   () => import("react-leaflet").then((m) => m.Polyline),
   { ssr: false }
 );
-const Tooltip = dynamic(() => import("react-leaflet").then((m) => m.Tooltip), {
-  ssr: false,
-});
+const Tooltip = dynamic<TooltipProps>(
+  () => import("react-leaflet").then((m) => m.Tooltip),
+  { ssr: false }
+);
+
+// Use a typed center to keep TS calm
+const WORLD_CENTER: LatLngTuple = [20, 0];
+
 
 // helper to build a tiny arrow from wind u,v (m/s) around lat,lon
 function arrowFromUV(
@@ -285,15 +296,12 @@ export default function Map() {
         </label>
       </div>
 
-      <MapContainer
-        center={[20, 0]}
-        zoom={2}
-        style={{ height: "100%", width: "100%" }}
-      >
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        {polylines}
-        {windArrows}
-      </MapContainer>
+      <MapContainer center={WORLD_CENTER} zoom={2} style={{ height: "100%", width: "100%" }}>
+  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+  {polylines}
+  {windArrows}
+</MapContainer>
+
     </div>
   );
 }
