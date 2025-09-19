@@ -137,10 +137,9 @@ export default function Map() {
     });
 
     // pick midpoints (one per track)
-    const mids = picked.map(({ id, pts }) => {
-      const mid = pts[Math.floor(pts.length / 2)];
-      return { id, ...mid };
-    });
+    const mids = picked.map(({ pts }) => {
+  return pts[Math.floor(pts.length / 2)]; // ✅ mid already has .id
+});
 
     return { polylines: lines, mids };
   }, [data, maxTracks, minSegs, thinMeters, maxSpeedMs]);
