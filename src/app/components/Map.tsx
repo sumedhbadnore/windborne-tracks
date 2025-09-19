@@ -4,6 +4,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
+import { segmentSpeeds, colorForSpeed, haversine } from "../lib/geo";
+
 
 // If you used typed dynamic imports (Option A)
 import type {
