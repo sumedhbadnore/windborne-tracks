@@ -1,7 +1,11 @@
 // at top
 "use client";
 
+import React, { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
+import "leaflet/dist/leaflet.css";
+
+// If you used typed dynamic imports (Option A)
 import type {
   MapContainerProps,
   TileLayerProps,
@@ -10,7 +14,6 @@ import type {
 } from "react-leaflet";
 import type { LatLngTuple } from "leaflet";
 
-// Typed dynamic imports
 const MapContainer = dynamic<MapContainerProps>(
   () => import("react-leaflet").then((m) => m.MapContainer),
   { ssr: false }
@@ -28,8 +31,8 @@ const Tooltip = dynamic<TooltipProps>(
   { ssr: false }
 );
 
-// Use a typed center to keep TS calm
 const WORLD_CENTER: LatLngTuple = [20, 0];
+
 
 
 // helper to build a tiny arrow from wind u,v (m/s) around lat,lon
